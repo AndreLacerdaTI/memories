@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <title>Configurações</title>
+</head>
+<body>
+    {% if trocar_logo %}
+        <div>
+            <h1>Selecionar Logo</h1>
+        </div>
+    {% elif personalizar_tema %}
+        <form class="selecionar-cores" action="{{ url_for('salvar_tema_personalizado') }}" method="post">
+            <h1>Personalizar Tema</h1>
+            <label for="cor-primaria">Cor primária</label>
+            <input type="color" id="cor-primaria" name="cor-primaria" value="{{tema[0]}}">
+
+            <label for="cor-secundaria">Cor secundária</label>
+            <input type="color" id="cor-secundaria" name="cor-secundaria" value="{{tema[1]}}">
+
+            <label for="cor-texto-botao">Cor do texto dos botões</label>
+            <input type="color" id="cor-texto-botao" name="cor-texto-botao" value="{{tema[2]}}">
+
+            <label for="cor-botao">Cor dos botões</label>
+            <input type="color" id="cor-botao" name="cor-botao" value="{{tema[3]}}">
+
+            <label for="cor-de-texto">Cor dos textos da página</label>
+            <input type="color" id="cor-de-texto" name="cor-de-texto" value="{{tema[4]}}">
+
+            <select id="tipo-fundo" name="tipo-fundo">
+                <option value="{{tema[5]}}">{{tema[5]}}</option selected>
+                <option value="linear-gradient">linear-gradient</option>
+                <option value="radial-gradient">radial-gradient</option>
+            </select>
+
+            <button class="botao-menu">Salvar</button>
+        </form>
+        <div>
+            <h1>Visualização</h1>
+            <div id="exemplo-fundo">
+                <h2>Texto</h2>
+                <a href="" style="text-decoration: none;width: 100px;padding: 20px 0px;background: #fff;color: #000;border-radius: 30px;">Botão</a>
+            </div>
+        </div>
+    {% elif trocar_tema %}
+        <div>
+            <form action="{{ url_for('salvar_tema') }}" method="post">
+                <button class="botao-tema" name="tema" value="infantil"><img class="foto" src="/static/images/tema_infantil.png" alt=""></button>
+                <button class="botao-tema" name="tema" value="branco"><img class="foto" src="/static/images/tema_branco.png" alt=""></button>
+            </form>
+            <form action="{{ url_for('personalizar_tema') }}" method="post">
+                <button class="botao-menu">Personalizar</button>
+            </form>
+        </div>
+    {% else %}
+        <div>
+            <form action="{{ url_for('trocar_tema') }}" method="post">
+                <button class="botao-menu">Trocar tema</button>
+            </form>
+            <form action="{{ url_for('trocar_logo') }}" method="post">
+                <button class="botao-menu">Trocar logo</button>
+            </form>
+            <form action="{{ url_for('sair') }}" method="post">
+                <button class="botao-menu">Sair</button>
+            </form>
+        </div>
+    {% endif %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inputs cores e tipo
+            const primaria = document.getElementById('cor-primaria');
+            const secundaria = document.getElementById('cor-secundaria');
+            const fundo = document.getElementById('tipo-fundo');
+
+            const divExemplo = document.getElementById('exemplo-fundo');
+
+            function updateGradient() {
+                const corPrimaria = primaria.value;
+                const corSecundaria = secundaria.value;
+                const tipoFundo = fundo.value;
+
+                if (tipoFundo=='linear-gradient'){
+                    const linear = `linear-gradient(90deg, ${corPrimaria} 0%, ${corSecundaria} 100%`;
+                    divExemplo.style.background = linear;
+                } else if (tipoFundo=='radial-gradient') {
+                    const radial = `radial-gradient(circle, ${corSecundaria} 0%, ${corPrimaria} 100%)`;
+                    divExemplo.style.background = radial;
+                }
+            }
+
+
+            updateGradient();
+
+            primaria.addEventListener('input', updateGradient);
+            secundaria.addEventListener('input', updateGradient);
+            fundo.addEventListener('change', updateGradient);
+        });
+        
+        // Função para atualizar as cores dos elementos da página
+        function atualizarCores() {
+            const corTextoBotao = document.getElementById('cor-texto-botao').value;
+            const corBotao = document.getElementById('cor-botao').value;
+            const corDeTexto = document.getElementById('cor-de-texto').value;
+
+            // Atualizar cores
+            const botoes = document.querySelectorAll('a');
+            botoes.forEach(botao => {
+                botao.style.backgroundColor = corBotao;
+                botao.style.color = corTextoBotao;
+            });
+
+            const textos = document.querySelectorAll('h2');
+            textos.forEach(texto => {
+                texto.style.color = corDeTexto;
+            });
+        }
+
+        // Adicionar ouvintes de eventos aos inputs
+        document.getElementById('cor-primaria').addEventListener('input', atualizarCores);
+        document.getElementById('cor-secundaria').addEventListener('input', atualizarCores);
+        document.getElementById('cor-texto-botao').addEventListener('input', atualizarCores);
+        document.getElementById('cor-botao').addEventListener('input', atualizarCores);
+        document.getElementById('cor-de-texto').addEventListener('input', atualizarCores);
+    </script>
+</body>
+</html>

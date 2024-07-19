@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    {% if tema and tema is not sequence%}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/'+tema + '.css') }}">
+    {% elif not tema %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/infantil.css') }}">
+    {% elif tema is sequence %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/personalizado.css') }}">
+        <style>
+            :root {
+                --cor-primaria: {{tema[0]}};
+                --cor-secundaria: {{tema[1]}};
+                --cor-texto-botao: {{tema[2]}};
+                --cor-botao: {{tema[3]}};
+                --cor-de-texto: {{tema[4]}};
+                --tipo-fundo: {{tema[5]}};
+            }
+            {% if tema[5]=='linear-gradient' %}
+            body{
+                background: {{tema[5]}}(90deg, var(--cor-primaria) 0%, var(--cor-secundaria) 100%);
+            }
+            {% elif tema[5]=='radial-gradient' %}
+            body{
+                background: {{tema[5]}}(circle, var(--cor-secundaria) 0%, var(--cor-primaria) 100%);
+            }
+            {% endif %}
+        </style>
+    {% endif %}
+
+    <link rel="icon" href="{{ url_for('static', filename='images/icon.ico') }}" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+PE:wght@100..400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Slab&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
