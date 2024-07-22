@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Slab&display=swap');
 
 :root {
-    --cor-primaria: #3498db;
-    --cor-secundaria: #2ecc71;
+    --cor-primaria: #002A86;
+    --cor-secundaria: #ffffff;
     --cor-texto-botao: #ffffff;
-    --cor-botao: #5b5b5b;
+    --cor-botao: #002A86;
     --cor-de-fundo: #ffffff;
-    --cor-de-texto: #515151;
+    --cor-de-texto: #002A86;
 }
 
 html, body {

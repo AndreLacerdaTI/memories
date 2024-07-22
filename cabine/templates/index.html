@@ -3,7 +3,11 @@
 {% block title %}Memories{% endblock %}
 
 {% block content %}
-<img class="logo" id="ancora" src="static/images/logo.png" alt="">
+{% if tema[1]=='cruzeiro' %}
+    <img class="logo" id="ancora" src="static/images/cruzeiro.png" alt="">
+{% else %}
+    <img class="logo" id="ancora" src="static/images/logo.png" alt="">
+{% endif %}
 <br><br>
 <div class="album">
     {% if fotos %}

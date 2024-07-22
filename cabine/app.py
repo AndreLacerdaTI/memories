@@ -14,7 +14,7 @@ cliente_codigo = 0
 codigo_foto = 0
 
 global tema
-tema = 'branco'
+tema = ['default','branco']
 
 def gen_frames():
     while True:
@@ -85,13 +85,15 @@ def admin():
 
 @app.route('/trocar_tema', methods=['POST'])
 def trocar_tema():
-    return render_template('admin.html', trocar_tema=True)
+    global tema
+    return render_template('admin.html', trocar_tema=True, tema=tema)
 
 @app.route('/salvar_tema', methods=['POST'])
 def salvar_tema():
     novo_tema = request.form['tema']
     global tema
-    tema = novo_tema
+    tema = ['default',novo_tema]
+    print(tema)
     return render_template('admin.html')
 
 @app.route('/personalizar_tema', methods=['POST'])
@@ -108,7 +110,7 @@ def salvar_tema_personalizado():
     cor_botao = request.form['cor-botao']
     cor_de_texto = request.form['cor-de-texto']
     tipo_fundo = request.form['tipo-fundo']
-    novo_tema = [cor_primaria,cor_secundaria,cor_texto_botao,cor_botao,cor_de_texto,tipo_fundo]
+    novo_tema = ['custom',cor_primaria,cor_secundaria,cor_texto_botao,cor_botao,cor_de_texto,tipo_fundo]
     print(novo_tema)
     global tema
     tema = novo_tema
@@ -117,6 +119,24 @@ def salvar_tema_personalizado():
 @app.route('/trocar_logo', methods=['POST'])
 def trocar_logo():
     return render_template('admin.html', trocar_logo=True)
+@app.route('/salvar_logo', methods=['POST'])
+def salvar_logo():
+    if request.method == 'POST':
+        if 'logo' not in request.files:
+            flash('Erro ao enviar Logo, por favor tente novamente.')
+            return render_template('admin.html', trocar_logo=True)
+        file = request.files['logo']
+        if file.filename == '':
+            flash('Erro ao enviar Logo, por favor tente novamente.')
+            return render_template('admin.html', trocar_logo=True)
+        if file:
+            filename = 'logo.png' #file.filename
+            DIRETORIO = './static/images/'
+            file.save(os.path.join(DIRETORIO, filename))
+            flash('Logo salva com sucesso!')
+            return render_template('admin.html')
+    return render_template('upload.html')
+    return render_template('admin.html')
 
 @app.route('/sair', methods=['POST'])
 def sair():
@@ -124,5 +144,5 @@ def sair():
     return render_template('index.html', tema=tema) 
 
 if __name__ == '__main__':
-    #app.run(debug=True)
-    app.run(host='192.168.20.125', debug=True)
+    app.run(debug=True)
+    #app.run(host='192.168.20.125', debug=True)

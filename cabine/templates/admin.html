@@ -7,36 +7,53 @@
     <title>Configurações</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div id="mensagem" class="mensagem">
+            <div>
+                <h1>{{ messages[0] }}</h1>
+                <button class="botao-menu" onclick="fechar()">Ok</button>
+            </div>
+        </div>
+      {% endif %}
+    {% endwith %}
     {% if trocar_logo %}
         <div>
             <h1>Selecionar Logo</h1>
+            <form class="selecionar-cores" action="{{ url_for('salvar_logo') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="logo" accept="image/*">
+                <button class="botao-menu">Salvar</button>
+            </form>
         </div>
     {% elif personalizar_tema %}
-        <form class="selecionar-cores" action="{{ url_for('salvar_tema_personalizado') }}" method="post">
-            <h1>Personalizar Tema</h1>
-            <label for="cor-primaria">Cor primária</label>
-            <input type="color" id="cor-primaria" name="cor-primaria" value="{{tema[0]}}">
+        {% if tema is not sequence %}
 
-            <label for="cor-secundaria">Cor secundária</label>
-            <input type="color" id="cor-secundaria" name="cor-secundaria" value="{{tema[1]}}">
+        {% else %}
+            <form class="selecionar-cores" action="{{ url_for('salvar_tema_personalizado') }}" method="post">
+                <h1>Personalizar Tema</h1>
+                <label for="cor-primaria">Cor primária</label>
+                <input type="color" id="cor-primaria" name="cor-primaria" value="{{tema[0]}}">
 
-            <label for="cor-texto-botao">Cor do texto dos botões</label>
-            <input type="color" id="cor-texto-botao" name="cor-texto-botao" value="{{tema[2]}}">
+                <label for="cor-secundaria">Cor secundária</label>
+                <input type="color" id="cor-secundaria" name="cor-secundaria" value="{{tema[1]}}">
 
-            <label for="cor-botao">Cor dos botões</label>
-            <input type="color" id="cor-botao" name="cor-botao" value="{{tema[3]}}">
+                <label for="cor-texto-botao">Cor do texto dos botões</label>
+                <input type="color" id="cor-texto-botao" name="cor-texto-botao" value="{{tema[2]}}">
 
-            <label for="cor-de-texto">Cor dos textos da página</label>
-            <input type="color" id="cor-de-texto" name="cor-de-texto" value="{{tema[4]}}">
+                <label for="cor-botao">Cor dos botões</label>
+                <input type="color" id="cor-botao" name="cor-botao" value="{{tema[3]}}">
 
-            <select id="tipo-fundo" name="tipo-fundo">
-                <option value="{{tema[5]}}">{{tema[5]}}</option selected>
-                <option value="linear-gradient">linear-gradient</option>
-                <option value="radial-gradient">radial-gradient</option>
-            </select>
-
-            <button class="botao-menu">Salvar</button>
-        </form>
+                <label for="cor-de-texto">Cor dos textos da página</label>
+                <input type="color" id="cor-de-texto" name="cor-de-texto" value="{{tema[4]}}">
+                
+                <select id="tipo-fundo" name="tipo-fundo">
+                    
+                    <option value="linear-gradient">linear-gradient</option>
+                    <option value="radial-gradient">radial-gradient</option>
+                </select>
+                <button class="botao-menu">Salvar</button>
+            </form>
+        {% endif %}
         <div>
             <h1>Visualização</h1>
             <div id="exemplo-fundo">
@@ -46,9 +63,11 @@
         </div>
     {% elif trocar_tema %}
         <div>
+            <h1>{{tema}}</h1>
             <form action="{{ url_for('salvar_tema') }}" method="post">
                 <button class="botao-tema" name="tema" value="infantil"><img class="foto" src="/static/images/tema_infantil.png" alt=""></button>
                 <button class="botao-tema" name="tema" value="branco"><img class="foto" src="/static/images/tema_branco.png" alt=""></button>
+                <button class="botao-tema" name="tema" value="cruzeiro"><img class="foto" src="/static/images/tema_cruzeiro.png" alt=""></button>
             </form>
             <form action="{{ url_for('personalizar_tema') }}" method="post">
                 <button class="botao-menu">Personalizar</button>
@@ -123,6 +142,11 @@
         document.getElementById('cor-texto-botao').addEventListener('input', atualizarCores);
         document.getElementById('cor-botao').addEventListener('input', atualizarCores);
         document.getElementById('cor-de-texto').addEventListener('input', atualizarCores);
+
+        function fechar(){
+            const mensagem = document.getElementById('mensagem');
+            mensagem.style.display = 'none';
+        }
     </script>
 </body>
 </html>
