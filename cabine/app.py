@@ -1,8 +1,9 @@
-from flask import Flask, render_template, Response, request, jsonify, url_for, flash, g
+from flask import Flask, render_template, Response, request, jsonify, url_for, flash
 import cv2
 import os
 
 from dados import *
+from imprimir import *
 
 app = Flask(__name__)
 app.secret_key = 'cabine'
@@ -135,13 +136,23 @@ def salvar_logo():
             file.save(os.path.join(DIRETORIO, filename))
             flash('Logo salva com sucesso!')
             return render_template('admin.html')
-    return render_template('upload.html')
     return render_template('admin.html')
 
 @app.route('/sair', methods=['POST'])
 def sair():
     global tema
     return render_template('index.html', tema=tema) 
+
+@app.route('/imprimir', methods=['POST','GET'])
+def imprimir():
+    cliente = request.form['cliente']
+    
+    retorno = imprimir_foto()
+    if retorno=='Imprimindo':
+        return render_template('imprimir.html', cliente=cliente)
+    if retorno=='Erro':
+        flash('Erro ao imprimir')
+        return render_template('fotografia.html', cliente=cliente)
 
 if __name__ == '__main__':
     app.run(debug=True)

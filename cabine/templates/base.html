@@ -4,31 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
-    {% if tema[0] == 'default' %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/'+tema[1] + '.css') }}">
-    {% elif tema[0] == 'custom' %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/personalizado.css') }}">
-        <style>
-            :root {
-                --cor-primaria: {{tema[1]}};
-                --cor-secundaria: {{tema[2]}};
-                --cor-texto-botao: {{tema[3]}};
-                --cor-botao: {{tema[4]}};
-                --cor-de-texto: {{tema[5]}};
-                --tipo-fundo: {{tema[6]}};
-            }
-            {% if tema[6]=='linear-gradient' %}
-                body{
-                    background: {{tema[6]}}(90deg, var(--cor-primaria) 0%, var(--cor-secundaria) 100%);
+    {% if tema %}
+        {% if tema[0] == 'default' %}
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/'+tema[1] + '.css') }}">
+        {% elif tema[0] == 'custom' %}
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/personalizado.css') }}">
+            <style>
+                :root {
+                    --cor-primaria: {{tema[1]}};
+                    --cor-secundaria: {{tema[2]}};
+                    --cor-texto-botao: {{tema[3]}};
+                    --cor-botao: {{tema[4]}};
+                    --cor-de-texto: {{tema[5]}};
+                    --tipo-fundo: {{tema[6]}};
                 }
-            {% elif tema[6]=='radial-gradient' %}
-                body{
-                    background: {{tema[6]}}(circle, var(--cor-secundaria) 0%, var(--cor-primaria) 100%);
-                }
-            {% endif %}
-        </style>
+                {% if tema[6]=='linear-gradient' %}
+                    body{
+                        background: {{tema[6]}}(90deg, var(--cor-primaria) 0%, var(--cor-secundaria) 100%);
+                    }
+                {% elif tema[6]=='radial-gradient' %}
+                    body{
+                        background: {{tema[6]}}(circle, var(--cor-secundaria) 0%, var(--cor-primaria) 100%);
+                    }
+                {% endif %}
+            </style>
+        {% endif %}
+    {% else %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/branco.css') }}">
     {% endif %}
-
     <link rel="icon" href="{{ url_for('static', filename='images/icon.ico') }}" type="image/x-icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

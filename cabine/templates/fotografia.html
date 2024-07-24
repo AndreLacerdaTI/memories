@@ -14,17 +14,30 @@
 {% block title %}Memories{% endblock %}
 
 {% block content %}
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div id="mensagem" class="mensagem">
+            <div>
+                <h1>{{ messages[0] }}</h1>
+                <button class="botao-menu" onclick="fechar()">Ok</button>
+            </div>
+        </div>
+      {% endif %}
+    {% endwith %}
 
     <div class="container">
-        <div class="left">
+        <div class="left" id="minhaDiv">
             {% for codigo in range(1, 4) %}
                 <img class="foto" src="/static/fotos/{{ cliente }}-{{codigo}}.jpg" alt="">
             {% endfor %}
             <img class="logo" id="ancora" src="static/images/logo.png" alt="">
         </div>
-        <div class="right">
+        <div class="right" id="no-print">
             <h2 class="no-print">Deseja imprimir?</h2>
-            <a class="no-print" href="" onclick="window.print(); return false;">Sim</a>
+            <!--<a class="no-print" href="" onclick="window.print(); return false;">Sim</a>-->
+            <form class="selecionar-cores" action="{{ url_for('imprimir') }}" method="post">
+                <button name="cliente" value="{{cliente}}" onclick="preparar_foto()">Sim</button>
+            </form>
             <a class="no-print" href="/">Não</a>
         </div>
     </div>
@@ -48,7 +61,22 @@
             }, 2000);
         }
         window.onload = startAnimation;
+        function preparar_foto() {
+            const esconder_elementos = document.getElementById('no-print')
+            esconder_elementos.style.display = 'none';
+            const div = document.getElementById('minhaDiv');
+            let currentRotation = div.style.transform.replace(/[^\d.]/g, '') || 0;
+            currentRotation = parseFloat(currentRotation);
+            div.style.transform = `rotate(${currentRotation - 90}deg)`;
+            div.style.width = '100%';
+            div.style.height = '100%';
+        }
+        function fechar(){
+            const mensagem = document.getElementById('mensagem');
+            mensagem.style.display = 'none';
+        }
     </script>
+    
 {% endblock %}
 <!--
 </body>
