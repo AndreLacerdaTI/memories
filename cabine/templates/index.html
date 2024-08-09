@@ -5,10 +5,13 @@
 {% block content %}
 {% if tema[1]=='cruzeiro' %}
     <img class="logo" id="ancora" src="static/images/cruzeiro.png" alt="">
+{% elif tema[1]=='instagram' %}
+    <img class="logo" id="ancora" src="static/images/instagram.png" alt="">
 {% else %}
     <img class="logo" id="ancora" src="static/images/logo.png" alt="">
 {% endif %}
 <br><br>
+<!--
 <div class="album">
     {% if fotos %}
         {% for foto in fotos %}
@@ -28,10 +31,17 @@
         </div>
     {% endif %}
 </div>
+-->
+<!--
 <h1>Registre este momento especial</h1>
 <h2>&</h2>
 <h1>leve com você uma foto de recordação</h1>
+-->
+<h1>Vamos tirar uma foto!</h1>
 <br>
+<form class="config" action="{{ url_for('admin') }}" method="post">
+    <button class="botao-config"><img src="static/images/icone-config.png" alt=""></button>
+</form>
 <form action="{{ url_for('tirar_foto') }}" method="post">
     <button class="botao" autofocus>Começar</button>
 </form>

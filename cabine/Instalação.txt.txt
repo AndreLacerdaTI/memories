@@ -1,0 +1,10 @@
+1) Instalar Python 3.10 ou superior
+
+2) Rodar o getpip.py
+
+3) Instalar bibliotecas usando:
+pip install -r requirements.txt
+
+4) Iniciando a aplicação:
+- Crie um atalho do start.bat
+- Abra: shell:startup e coloque o atalho lá

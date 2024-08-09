@@ -120,6 +120,10 @@ form {
     justify-content: center;
 }
 
+.right {
+    gap: 10px;
+}
+
 .left {
     background-color: #fff;
 }
@@ -142,7 +146,7 @@ form {
     height: 100%;
 }
 
-.container a {
+.container a, .container form button {
     color: #fff;
     background-color: #ffffff34;
     background: linear-gradient(-45deg, #ffffff8b 0%, #ffffff41 35%, #ffffff88 100%);
@@ -150,7 +154,7 @@ form {
     height: auto;
     margin: 10px;
     font-size: 3em;
-    border: 2px solid #fff;
+    border: 0;
     border-radius: 40px;
     font-family: "Bebas Neue", sans-serif;
     font-weight: 400;
@@ -158,7 +162,7 @@ form {
     text-decoration: none;
     transition: 0.2s;
 }
-.container a:hover {
+.container a:hover, .container form button:hover {
     scale: 1.1;
 }
 

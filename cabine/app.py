@@ -73,14 +73,13 @@ def capture():
         #return jsonify(success=True, message="Imagem capturada com sucesso!", redirect_url=redirect_url)
         redirect_url = url_for('tirar')
         return jsonify(success=True, message="Imagem capturada com sucesso!", redirect_url=redirect_url)
-
     
 @app.route('/fotografia')
 def fotografia():
     cliente = request.args.get('cliente', '')
     return render_template('fotografia.html', cliente = cliente, tema=tema)
 
-@app.route('/admin')
+@app.route('/admin', methods=['POST','GET'])
 def admin():
     return render_template('admin.html')
 
@@ -149,7 +148,7 @@ def imprimir():
     
     retorno = imprimir_foto()
     if retorno=='Imprimindo':
-        return render_template('imprimir.html', cliente=cliente)
+        return render_template('fotografia.html', cliente=cliente)
     if retorno=='Erro':
         flash('Erro ao imprimir')
         return render_template('fotografia.html', cliente=cliente)
